@@ -1,0 +1,8 @@
+name: Loups-Garous
+main: fr.gwenzy.loupsgarous.main.Main
+author: Gwenzy
+version: 1.0
+commands:
+  lg:
+    usage: /lg <Commande>
+    description: Administration d'une partie
