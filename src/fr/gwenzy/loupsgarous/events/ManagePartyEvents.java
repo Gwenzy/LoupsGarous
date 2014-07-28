@@ -11,7 +11,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import fr.gwenzy.loupsgarous.main.Main;
 import fr.gwenzy.loupsgarous.methods.AdminMethods;
 
 public class ManagePartyEvents implements Listener
@@ -65,6 +64,26 @@ public class ManagePartyEvents implements Listener
 							event.getWhoClicked().openInventory(AdminMethods.getAdminInventory(partyName, event.getWhoClicked().getName()));
 							
 						}
+						else if(itemName.equalsIgnoreCase(ChatColor.GREEN+"Narration de la partie automatique"))
+						{
+
+							config.set("game.directedByMaster", !config.getBoolean("game.directedByMaster"));
+							config.save(partyFile);
+							event.getWhoClicked().closeInventory();
+							event.getWhoClicked().openInventory(AdminMethods.getAdminInventory(partyName, event.getWhoClicked().getName()));
+							
+						}
+						else if(itemName.equalsIgnoreCase(ChatColor.GREEN+"Définition des rôles automatiques"))
+						{
+
+							config.set("game.rolesAuto", !config.getBoolean("game.rolesAuto"));
+							config.save(partyFile);
+							event.getWhoClicked().closeInventory();
+							event.getWhoClicked().openInventory(AdminMethods.getAdminInventory(partyName, event.getWhoClicked().getName()));
+							
+						}
+						
+						
 					}
 				}catch(Exception e){e.printStackTrace();}
 			}

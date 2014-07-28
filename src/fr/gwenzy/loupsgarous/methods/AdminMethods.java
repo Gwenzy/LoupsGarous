@@ -26,20 +26,24 @@ public class AdminMethods {
 		ItemStack startGame = new ItemStack(Material.EMERALD);
 		ItemStack togglePrivateOn = new ItemStack(Material.ENDER_PEARL);
 		ItemStack togglePrivateOff = new ItemStack(Material.EYE_OF_ENDER);
+		ItemStack invite = new ItemStack(Material.PAPER);
 		ItemStack directedAutoOn = new ItemStack(Material.REDSTONE_BLOCK);
 		ItemStack directedAutoOff = new ItemStack(Material.REDSTONE);
 		ItemStack rolesAutoOff = new ItemStack(Material.REDSTONE_LAMP_OFF);
 		ItemStack rolesAutoOn = new ItemStack(Material.REDSTONE_TORCH_ON);
+		ItemStack modify = new ItemStack(Material.DIAMOND_CHESTPLATE);
 		ItemStack timeManage = new ItemStack(Material.WATCH);
 		ItemStack deleteGame = new ItemStack(Material.FIRE);
 		
 		ItemMeta startGameMeta = startGame.getItemMeta();
 		ItemMeta toggleOnMeta = togglePrivateOn.getItemMeta();
 		ItemMeta toggleOffMeta = togglePrivateOff.getItemMeta();
+		ItemMeta inviteMeta = invite.getItemMeta();
 		ItemMeta directedAutoMetaOn = directedAutoOn.getItemMeta();
 		ItemMeta directedAutoMetaOff = directedAutoOff.getItemMeta();
 		ItemMeta rolesAutoMetaOn = rolesAutoOn.getItemMeta();
 		ItemMeta rolesAutoMetaOff = rolesAutoOff.getItemMeta();
+		ItemMeta modifyMeta = modify.getItemMeta();
 		ItemMeta timeManageMeta = timeManage.getItemMeta();
 		ItemMeta deleteGameMeta = deleteGame.getItemMeta();
 		
@@ -58,6 +62,9 @@ public class AdminMethods {
 		toggleOffMeta.setDisplayName(ChatColor.GREEN+"Type de partie");
 		
 		toggleOffMeta.setLore(liste);
+		
+		inviteMeta.setDisplayName(ChatColor.GREEN+"Inviter des joueurs dans la partie");
+		
 		directedAutoMetaOn.setDisplayName(ChatColor.GREEN+"Narration de la partie automatique");
 		directedAutoMetaOn.setLore(liste1);
 		directedAutoMetaOff.setLore(liste2);
@@ -66,6 +73,7 @@ public class AdminMethods {
 		rolesAutoMetaOff.setLore(liste2);
 		rolesAutoMetaOn.setDisplayName(ChatColor.GREEN+"Définition des rôles automatiques");
 		rolesAutoMetaOff.setDisplayName(ChatColor.GREEN+"Définition des rôles automatiques");
+		modifyMeta.setDisplayName(ChatColor.GREEN+"Modifier les rôles");
 		timeManageMeta.setDisplayName(ChatColor.GREEN+"Gérer les temps de parole/d'action");
 		ArrayList<String> actionTimeLore = new ArrayList<>();
 		actionTimeLore.add("Temps d'action pour les personnages secondaires : "+config.getInt("game.times.action")+"s");
@@ -76,10 +84,12 @@ public class AdminMethods {
 		startGame.setItemMeta(startGameMeta);
 		togglePrivateOn.setItemMeta(toggleOnMeta);
 		togglePrivateOff.setItemMeta(toggleOffMeta);
+		invite.setItemMeta(inviteMeta);
 		directedAutoOn.setItemMeta(directedAutoMetaOn);
 		directedAutoOff.setItemMeta(directedAutoMetaOff);
 		rolesAutoOff.setItemMeta(rolesAutoMetaOff);
 		rolesAutoOn.setItemMeta(rolesAutoMetaOn);
+		modify.setItemMeta(modifyMeta);
 		timeManage.setItemMeta(timeManageMeta);
 		deleteGame.setItemMeta(deleteGameMeta);
 		
@@ -92,6 +102,7 @@ public class AdminMethods {
 		if(config.getBoolean("game.privateGame"))
 		{
 			i.setItem(20, togglePrivateOn);
+			i.setItem(29, invite);
 		}
 		else
 		{
@@ -112,6 +123,7 @@ public class AdminMethods {
 		else
 		{
 			i.setItem(22, rolesAutoOff);
+			i.setItem(31, modify);
 		}
 		i.setItem(23, timeManage);
 		i.setItem(24, deleteGame);
