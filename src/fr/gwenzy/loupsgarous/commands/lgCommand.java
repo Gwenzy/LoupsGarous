@@ -2,6 +2,7 @@ package fr.gwenzy.loupsgarous.commands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -80,6 +81,8 @@ public class lgCommand implements CommandExecutor {
 										fileConfig.set("game.times.action", 30);										
 										fileConfig.set("game.times.lg", 90);										
 										fileConfig.set("game.allConfigured", true);
+										fileConfig.set("game.players", new ArrayList<String>());
+										
 										try {
 											fileConfig.save(gameFileConfig);
 										} catch (IOException e) {
