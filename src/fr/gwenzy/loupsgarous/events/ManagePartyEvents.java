@@ -17,12 +17,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import fr.gwenzy.loupsgarous.main.Main;
 import fr.gwenzy.loupsgarous.methods.AdminMethods;
 
 public class ManagePartyEvents implements Listener
 {
+	private Main plugin;
+	public ManagePartyEvents(Main plugin)
+	{
+		this.plugin = plugin;
+	}
 	@SuppressWarnings("unused")
 	@EventHandler
 	public void onInteractInMenu(InventoryClickEvent event) throws IOException
@@ -303,7 +309,49 @@ public class ManagePartyEvents implements Listener
 							event.getWhoClicked().openInventory(i);
 							
 						}
-						
+						else if(itemName.equalsIgnoreCase(ChatColor.RED+"Supprimer la partie"))
+						{
+							((Player)event.getWhoClicked()).sendMessage(ChatColor.GREEN+"La partie a été supprimée !");
+							partyFile.delete();
+							event.setCancelled(true);
+							event.getWhoClicked().closeInventory();
+							
+						}			
+						else if(itemName.equalsIgnoreCase(ChatColor.GREEN+"Gérer les temps de parole/d'action"))
+						{
+							Inventory i = Main.s.createInventory(null, 9, "Gestion du temps : "+partyName);
+							ItemStack lg = new ItemStack(Material.COOKED_BEEF);
+							ItemMeta lgMeta = lg.getItemMeta();
+							lgMeta.setDisplayName(ChatColor.GREEN+"Loups Garous");
+							ArrayList<String> lore = new ArrayList<>();
+							lore.add("Chat + Vote : "+config.getInt("game.times.lg")+" secondes.");
+							lgMeta.setLore(lore);
+							lg.setItemMeta(lgMeta);
+							
+							ItemStack pn = new ItemStack(Material.WATCH);
+							ItemMeta pnMeta = pn.getItemMeta();
+							pnMeta.setDisplayName(ChatColor.GREEN+"Personnages normaux");
+							ArrayList<String> lorepn = new ArrayList<>();
+							lorepn.add("Temps action : "+config.getInt("game.times.action")+" secondes.");
+							pnMeta.setLore(lorepn);
+							pn.setItemMeta(pnMeta);
+							
+							ItemStack v = new ItemStack(Material.WHEAT);
+							ItemMeta vMeta = v.getItemMeta();
+							vMeta.setDisplayName(ChatColor.GREEN+"Villageois");
+							ArrayList<String> lorev = new ArrayList<>();
+							lorev.add("Chat + Vote : "+config.getInt("game.times.vil")+" secondes.");
+							vMeta.setLore(lorev);
+							v.setItemMeta(vMeta);
+							
+							i.addItem(lg);
+							i.addItem(pn);
+							i.addItem(v);
+							event.setCancelled(true);
+							event.getWhoClicked().closeInventory();
+							event.getWhoClicked().openInventory(i);
+						}
+						//TODO Temps parole
 						
 					}
 				}catch(Exception e){e.printStackTrace();}
@@ -329,11 +377,17 @@ public class ManagePartyEvents implements Listener
 					FileConfiguration config = YamlConfiguration.loadConfiguration(partyFile);
 					if(ok)
 					{
+						
 						String pseudo = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
-						List<String> players = config.getStringList("game.players");
+						/*List<String> players = config.getStringList("game.players");
 						players.add(pseudo); 
 						config.set("game.players", players);
-						config.save(partyFile);
+						config.save(partyFile);*/
+						Player p = Main.s.getPlayer(pseudo);
+						p.setMetadata("invited", new FixedMetadataValue(plugin, true));
+						p.closeInventory();
+						p.openInventory(AdminMethods.getInv(event.getWhoClicked().getName()));
+						
 						event.setCancelled(true);
 						event.getWhoClicked().closeInventory();
 						event.getWhoClicked().openInventory(AdminMethods.getAdminInventory(partyName, event.getWhoClicked().getName()));
@@ -370,8 +424,9 @@ public class ManagePartyEvents implements Listener
 						{
 							playersNo.add(roles.get(i).split("!")[1]);
 						}
-						for(Player p : Main.s.getOnlinePlayers())
+						for(String pl : config.getStringList("game.players"))
 						{
+							Player p = Main.s.getPlayer(pl);
 							if(!playersNo.contains(p.getName()))
 							{
 								nbP++;
@@ -456,6 +511,34 @@ public class ManagePartyEvents implements Listener
 						event.getWhoClicked().openInventory(AdminMethods.getAdminInventory(partyName, event.getWhoClicked().getName()));
 					}
 					catch(Exception e){}
+				}
+			}
+			else if(event.getInventory().getName().contains("Gestion du temps : "))
+			{
+				if(event.getCurrentItem()!=null)
+				{
+					String partyName = event.getInventory().getName().replace("Gestion du temps : ", "");
+					File partyFile = null;
+
+					for(File f : new File("plugins/LoupsGarous/games/").listFiles())
+					{
+					
+						if(f.getName().split("!!")[0].equalsIgnoreCase(partyName))
+						{
+
+							partyFile = f;
+							ok = true;
+							break;
+						}
+					}
+					
+					Player p = (Player) event.getWhoClicked();
+					p.sendMessage(ChatColor.GOLD+Main.pn+"Vous souhaitez changer le temps '"+event.getCurrentItem().getItemMeta().getDisplayName()+ChatColor.GOLD+"'. Merci d'entrer le temps choisi (en secondes).");
+					p.setMetadata("waitForTime", new FixedMetadataValue(plugin, true));
+					p.setMetadata("timeChangeRole", new FixedMetadataValue(plugin, ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()).replace("Loups Garous", "lg")));
+					event.setCancelled(true);
+					event.getWhoClicked().closeInventory();
+					
 				}
 			}
 		}

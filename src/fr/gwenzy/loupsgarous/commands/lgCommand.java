@@ -80,6 +80,7 @@ public class lgCommand implements CommandExecutor {
 										fileConfig.set("game.rolesAuto", false);										
 										fileConfig.set("game.times.action", 30);										
 										fileConfig.set("game.times.lg", 90);										
+										fileConfig.set("game.times.vil", 600);										
 										fileConfig.set("game.allConfigured", true);
 										fileConfig.set("game.players", new ArrayList<String>());
 										

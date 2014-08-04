@@ -134,4 +134,39 @@ public class AdminMethods {
 		
 		return i;
 	}
+	
+	public static Inventory getInv(String pseudo)
+	{
+		Inventory i = Main.s.createInventory(null, 45, pseudo+" vous invite");
+		ItemStack oui = new ItemStack(Material.EMERALD_BLOCK);
+		ItemMeta ouiMeta = oui.getItemMeta();
+		ouiMeta.setDisplayName(ChatColor.GREEN+""+ChatColor.BOLD+"Accepter l'invitation");
+		oui.setItemMeta(ouiMeta);
+		ItemStack non = new ItemStack(Material.REDSTONE_BLOCK);
+		ItemMeta nonMeta = non.getItemMeta();
+		nonMeta.setDisplayName(ChatColor.RED+""+ChatColor.BOLD+"Refuser l'invitation");
+		non.setItemMeta(nonMeta);
+		i.setItem(10, oui);
+		i.setItem(11, oui);
+		i.setItem(12, oui);
+		i.setItem(19, oui);
+		i.setItem(20, oui);
+		i.setItem(21, oui);
+		i.setItem(28, oui);
+		i.setItem(29, oui);
+		i.setItem(30, oui);
+		
+		i.setItem(14, non);
+		i.setItem(15, non);
+		i.setItem(16, non);
+		i.setItem(23, non);
+		i.setItem(24, non);
+		i.setItem(25, non);
+		i.setItem(32, non);
+		i.setItem(33, non);
+		i.setItem(34, non);
+	
+		
+		return i;
+	}
 }

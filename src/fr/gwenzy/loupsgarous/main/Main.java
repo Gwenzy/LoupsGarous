@@ -8,7 +8,9 @@ import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.gwenzy.loupsgarous.commands.lgCommand;
+import fr.gwenzy.loupsgarous.events.InvitationEvents;
 import fr.gwenzy.loupsgarous.events.ManagePartyEvents;
+import fr.gwenzy.loupsgarous.events.chatEvent;
 
 public class Main extends JavaPlugin
 {
@@ -23,7 +25,9 @@ public class Main extends JavaPlugin
 		
 		getCommand("lg").setExecutor(new lgCommand());
 		
-		Main.s.getPluginManager().registerEvents(new ManagePartyEvents(), this);
+		Main.s.getPluginManager().registerEvents(new ManagePartyEvents(this), this);
+		Main.s.getPluginManager().registerEvents(new InvitationEvents(this), this);
+		Main.s.getPluginManager().registerEvents(new chatEvent(this), this);
 		
 		
 		log.info(pn+"Plugin activé");
